@@ -47,7 +47,7 @@ export function PortalHeader() {
         {/* Notifications */}
         <button className="relative flex size-8 items-center justify-center rounded-md border border-border transition-colors hover:bg-secondary">
           <Bell className="size-3.5 text-muted-foreground" />
-          <span className="absolute -right-0.5 -top-0.5 flex size-3 items-center justify-center rounded-full bg-terminal-green text-[8px] font-bold text-background">
+          <span className="absolute -right-0.5 -top-0.5 flex size-3 items-center justify-center rounded-full bg-terminal-green text-[8px] font-bold text-primary-foreground">
             3
           </span>
         </button>

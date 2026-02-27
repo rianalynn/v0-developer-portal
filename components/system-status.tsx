@@ -42,7 +42,7 @@ export function SystemStatus() {
   const overallStatus: Status = allOperational ? "operational" : "degraded"
 
   return (
-    <footer className="border-t border-border bg-card">
+    <footer className="border-t border-border bg-card/80">
       <div className="flex flex-col gap-3 px-6 py-4">
         {/* Top Row */}
         <div className="flex items-center justify-between">

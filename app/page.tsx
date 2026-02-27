@@ -42,10 +42,10 @@ export default function DeveloperPortal() {
 
 function HeroBanner() {
   return (
-    <div className="relative overflow-hidden rounded-lg border border-border bg-surface p-6">
+    <div className="relative overflow-hidden rounded-lg border border-border bg-card p-6">
       {/* Glow effect */}
-      <div className="pointer-events-none absolute -right-20 -top-20 size-60 rounded-full bg-terminal-green/5 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-10 -left-10 size-40 rounded-full bg-terminal-green/3 blur-2xl" />
+      <div className="pointer-events-none absolute -right-20 -top-20 size-60 rounded-full bg-terminal-green/8 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-10 -left-10 size-40 rounded-full bg-terminal-green/5 blur-2xl" />
 
       <div className="relative flex items-center justify-between">
         <div className="flex flex-col gap-2">
@@ -61,10 +61,10 @@ function HeroBanner() {
             of specialized food science APIs. Start building in minutes.
           </p>
           <div className="mt-2 flex items-center gap-3">
-            <button className="rounded-md bg-terminal-green px-4 py-2 font-mono text-xs font-bold text-background transition-colors hover:bg-terminal-green-dim">
+            <button className="rounded-md bg-terminal-green px-4 py-2 font-mono text-xs font-bold text-primary-foreground transition-colors hover:bg-terminal-green-dim">
               Get API Key
             </button>
-            <button className="rounded-md border border-border bg-secondary px-4 py-2 font-mono text-xs text-foreground transition-colors hover:bg-surface-elevated">
+            <button className="rounded-md border border-border bg-secondary px-4 py-2 font-mono text-xs text-foreground transition-colors hover:bg-muted">
               View Docs
             </button>
           </div>

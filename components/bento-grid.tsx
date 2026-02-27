@@ -33,7 +33,7 @@ function BentoCard({ title, description, icon, stat, statLabel, badge, className
   return (
     <div
       className={cn(
-        "group relative flex flex-col overflow-hidden rounded-lg border border-border bg-surface p-5 transition-all duration-300 hover:border-terminal-green/30 hover:bg-surface-elevated",
+        "group relative flex flex-col overflow-hidden rounded-lg border border-border bg-card p-5 transition-all duration-300 hover:border-terminal-green/30 hover:shadow-sm",
         accent && "border-terminal-green/20 bg-terminal-green-subtle",
         className
       )}
@@ -118,7 +118,7 @@ function DataTicker() {
         <div key={item.label} className="flex items-center justify-between rounded-md border border-border bg-secondary/50 px-3 py-1.5">
           <span className="text-[10px] text-muted-foreground">{item.label}</span>
           <div className="flex items-center gap-2">
-            <span className="font-mono text-xs font-bold text-foreground">{item.value}</span>
+            <span className="font-mono text-xs font-bold text-card-foreground">{item.value}</span>
             <span className="font-mono text-[10px] text-terminal-green">{item.change}</span>
           </div>
         </div>
