@@ -160,7 +160,7 @@ export function ApiReference() {
       </div>
 
       {/* Endpoint List */}
-      <div className="flex flex-col gap-1 rounded-lg border border-border bg-surface p-2">
+      <div className="flex flex-col gap-1 rounded-lg border border-border bg-card p-2">
         {endpoints.map((ep, idx) => (
           <button
             key={idx}
@@ -186,9 +186,9 @@ export function ApiReference() {
       </div>
 
       {/* Split-Pane View */}
-      <div className="grid grid-cols-1 gap-px overflow-hidden rounded-lg border border-border bg-border lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-0 overflow-hidden rounded-lg border border-border lg:grid-cols-2">
         {/* Left Pane: Documentation */}
-        <div className="flex flex-col gap-4 bg-surface p-5">
+        <div className="flex flex-col gap-4 bg-card p-5">
           <div className="flex items-center gap-2">
             <MethodBadge method={endpoints[activeEndpoint].method} />
             <code className="font-mono text-sm text-foreground">{endpoints[activeEndpoint].path}</code>
@@ -255,9 +255,9 @@ export function ApiReference() {
         </div>
 
         {/* Right Pane: Code Snippet */}
-        <div className="flex flex-col bg-card">
+        <div className="flex flex-col bg-[#0c1f1b]">
           {/* Code Tabs Header */}
-          <div className="flex items-center justify-between border-b border-border px-4 py-2">
+          <div className="flex items-center justify-between border-b border-[#1a3d35] px-4 py-2">
             <div className="flex items-center gap-1">
               {[
                 { id: "curl", label: "cURL" },
@@ -270,8 +270,8 @@ export function ApiReference() {
                   className={cn(
                     "rounded-md px-2.5 py-1 font-mono text-xs transition-colors",
                     codeTab === tab.id
-                      ? "bg-terminal-green-subtle text-terminal-green"
-                      : "text-muted-foreground hover:text-foreground"
+                      ? "bg-terminal-green/15 text-terminal-green"
+                      : "text-[#6b9e96] hover:text-[#d0e8e4]"
                   )}
                 >
                   {tab.label}
@@ -281,12 +281,12 @@ export function ApiReference() {
             <div className="flex items-center gap-2">
               <button
                 onClick={handleCopy}
-                className="flex items-center gap-1 rounded-md px-2 py-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
+                className="flex items-center gap-1 rounded-md px-2 py-1 text-xs text-[#6b9e96] transition-colors hover:text-[#d0e8e4]"
               >
                 {copied ? <Check className="size-3 text-terminal-green" /> : <Copy className="size-3" />}
                 <span>{copied ? "Copied" : "Copy"}</span>
               </button>
-              <button className="flex items-center gap-1 rounded-md bg-terminal-green/10 px-2.5 py-1 text-xs text-terminal-green transition-colors hover:bg-terminal-green/20">
+              <button className="flex items-center gap-1 rounded-md bg-terminal-green/15 px-2.5 py-1 text-xs text-terminal-green transition-colors hover:bg-terminal-green/25">
                 <Play className="size-3" />
                 <span>Run</span>
               </button>
@@ -305,12 +305,12 @@ export function ApiReference() {
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-between border-t border-border px-4 py-2">
-            <span className="font-mono text-[10px] text-muted-foreground">
+          <div className="flex items-center justify-between border-t border-[#1a3d35] px-4 py-2">
+            <span className="font-mono text-[10px] text-[#6b9e96]">
               Response time: <span className="text-terminal-green">23ms</span>
             </span>
-            <span className="font-mono text-[10px] text-muted-foreground">
-              Rate limit: <span className="text-foreground">4,987</span> remaining
+            <span className="font-mono text-[10px] text-[#6b9e96]">
+              Rate limit: <span className="text-[#d0e8e4]">4,987</span> remaining
             </span>
           </div>
         </div>
@@ -321,46 +321,46 @@ export function ApiReference() {
 
 function CurlHighlighted() {
   return (
-    <span className="text-foreground">
+    <span className="text-[#d0e8e4]">
       <span className="text-blue-400">curl</span>{" "}
       <span className="text-amber-400">-X GET</span>{" "}
       <span className="text-terminal-green">{'"https://api.journeyai.com/v3/ingredients/search"'}</span>{" "}
-      <span className="text-muted-foreground">\</span>{"\n"}
+      <span className="text-[#6b9e96]">\</span>{"\n"}
       {"  "}<span className="text-amber-400">-H</span>{" "}
       <span className="text-terminal-green">{'"Authorization: Bearer YOUR_API_KEY"'}</span>{" "}
-      <span className="text-muted-foreground">\</span>{"\n"}
+      <span className="text-[#6b9e96]">\</span>{"\n"}
       {"  "}<span className="text-amber-400">-H</span>{" "}
       <span className="text-terminal-green">{'"Content-Type: application/json"'}</span>{" "}
-      <span className="text-muted-foreground">\</span>{"\n"}
+      <span className="text-[#6b9e96]">\</span>{"\n"}
       {"  "}<span className="text-amber-400">-d</span>{" "}
       <span className="text-terminal-green">{"'"}</span>
-      <span className="text-foreground">{"{"}</span>{"\n"}
+      <span className="text-[#d0e8e4]">{"{"}</span>{"\n"}
       {"    "}<span className="text-blue-400">{'"query"'}</span>
-      <span className="text-foreground">: </span>
+      <span className="text-[#d0e8e4]">: </span>
       <span className="text-terminal-green">{'"whey protein isolate"'}</span>
-      <span className="text-foreground">,</span>{"\n"}
+      <span className="text-[#d0e8e4]">,</span>{"\n"}
       {"    "}<span className="text-blue-400">{'"filters"'}</span>
-      <span className="text-foreground">{": {"}</span>{"\n"}
+      <span className="text-[#d0e8e4]">{": {"}</span>{"\n"}
       {"      "}<span className="text-blue-400">{'"allergens"'}</span>
-      <span className="text-foreground">{": ["}</span>
+      <span className="text-[#d0e8e4]">{": ["}</span>
       <span className="text-terminal-green">{'"dairy"'}</span>
-      <span className="text-foreground">{"],"}</span>{"\n"}
+      <span className="text-[#d0e8e4]">{"],"}</span>{"\n"}
       {"      "}<span className="text-blue-400">{'"min_protein"'}</span>
-      <span className="text-foreground">: </span>
+      <span className="text-[#d0e8e4]">: </span>
       <span className="text-amber-400">80</span>
-      <span className="text-foreground">,</span>{"\n"}
+      <span className="text-[#d0e8e4]">,</span>{"\n"}
       {"      "}<span className="text-blue-400">{'"organic"'}</span>
-      <span className="text-foreground">: </span>
+      <span className="text-[#d0e8e4]">: </span>
       <span className="text-amber-400">true</span>{"\n"}
-      {"    "}<span className="text-foreground">{"},"}</span>{"\n"}
+      {"    "}<span className="text-[#d0e8e4]">{"},"}</span>{"\n"}
       {"    "}<span className="text-blue-400">{'"limit"'}</span>
-      <span className="text-foreground">: </span>
+      <span className="text-[#d0e8e4]">: </span>
       <span className="text-amber-400">25</span>
-      <span className="text-foreground">,</span>{"\n"}
+      <span className="text-[#d0e8e4]">,</span>{"\n"}
       {"    "}<span className="text-blue-400">{'"offset"'}</span>
-      <span className="text-foreground">: </span>
+      <span className="text-[#d0e8e4]">: </span>
       <span className="text-amber-400">0</span>{"\n"}
-      {"  "}<span className="text-foreground">{"}"}</span>
+      {"  "}<span className="text-[#d0e8e4]">{"}"}</span>
       <span className="text-terminal-green">{"'"}</span>
     </span>
   )
@@ -368,7 +368,7 @@ function CurlHighlighted() {
 
 function JsonHighlighted() {
   return (
-    <span className="text-foreground">
+    <span className="text-[#d0e8e4]">
       <span>{"{"}</span>{"\n"}
       {"  "}<span className="text-blue-400">{'"status"'}</span>: <span className="text-amber-400">200</span>,{"\n"}
       {"  "}<span className="text-blue-400">{'"data"'}</span>: {"{"}{"\n"}
@@ -404,15 +404,15 @@ function JsonHighlighted() {
 
 function PythonHighlighted() {
   return (
-    <span className="text-foreground">
+    <span className="text-[#d0e8e4]">
       <span className="text-blue-400">import</span> journeyai{"\n"}
       {"\n"}
-      <span className="text-muted-foreground"># Initialize the client</span>{"\n"}
+      <span className="text-[#6b9e96]"># Initialize the client</span>{"\n"}
       client = journeyai.<span className="text-amber-400">Client</span>(
       {"\n"}{"    "}api_key=<span className="text-terminal-green">{'"YOUR_API_KEY"'}</span>
       {"\n"}){"\n"}
       {"\n"}
-      <span className="text-muted-foreground"># Search for ingredients</span>{"\n"}
+      <span className="text-[#6b9e96]"># Search for ingredients</span>{"\n"}
       results = client.ingredients.<span className="text-amber-400">search</span>({"\n"}
       {"    "}query=<span className="text-terminal-green">{'"whey protein isolate"'}</span>,{"\n"}
       {"    "}filters={"{"}{"\n"}

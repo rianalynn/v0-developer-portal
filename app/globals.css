@@ -4,46 +4,46 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Journey AI Dark Theme — Industrial Science meets Silicon Valley */
-  --background: #050505;
-  --foreground: #e0e0e0;
-  --card: #0a0a0a;
-  --card-foreground: #e0e0e0;
-  --popover: #0a0a0a;
-  --popover-foreground: #e0e0e0;
-  --primary: #00FF41;
-  --primary-foreground: #050505;
-  --secondary: #111111;
-  --secondary-foreground: #a0a0a0;
-  --muted: #111111;
-  --muted-foreground: #6b6b6b;
-  --accent: #00FF41;
-  --accent-foreground: #050505;
-  --destructive: #ff3333;
+  /* Journey AI — Light background, dark sidebar, aqua-green accent */
+  --background: #fafbfc;
+  --foreground: #1a1a2e;
+  --card: #ffffff;
+  --card-foreground: #1a1a2e;
+  --popover: #ffffff;
+  --popover-foreground: #1a1a2e;
+  --primary: #00b4a0;
+  --primary-foreground: #ffffff;
+  --secondary: #f0f4f5;
+  --secondary-foreground: #3a4a5c;
+  --muted: #f0f4f5;
+  --muted-foreground: #6b7b8d;
+  --accent: #00b4a0;
+  --accent-foreground: #ffffff;
+  --destructive: #e53935;
   --destructive-foreground: #ffffff;
-  --border: #1a1a1a;
-  --input: #1a1a1a;
-  --ring: #00FF41;
-  --chart-1: #00FF41;
-  --chart-2: #00cc34;
-  --chart-3: #009926;
-  --chart-4: #33ff67;
-  --chart-5: #66ff8d;
+  --border: #e2e8ec;
+  --input: #e2e8ec;
+  --ring: #00b4a0;
+  --chart-1: #00b4a0;
+  --chart-2: #009688;
+  --chart-3: #00796b;
+  --chart-4: #26c6b8;
+  --chart-5: #4dd9cb;
   --radius: 0.5rem;
-  --sidebar: #080808;
-  --sidebar-foreground: #e0e0e0;
-  --sidebar-primary: #00FF41;
-  --sidebar-primary-foreground: #050505;
-  --sidebar-accent: #111111;
-  --sidebar-accent-foreground: #e0e0e0;
-  --sidebar-border: #1a1a1a;
-  --sidebar-ring: #00FF41;
-  --surface: #0d0d0d;
-  --surface-elevated: #141414;
-  --terminal-green: #00FF41;
-  --terminal-green-dim: #00cc34;
-  --terminal-green-glow: rgba(0, 255, 65, 0.15);
-  --terminal-green-subtle: rgba(0, 255, 65, 0.08);
+  --sidebar: #0c1f1b;
+  --sidebar-foreground: #d0e8e4;
+  --sidebar-primary: #00b4a0;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #15302a;
+  --sidebar-accent-foreground: #d0e8e4;
+  --sidebar-border: #1a3d35;
+  --sidebar-ring: #00b4a0;
+  --surface: #ffffff;
+  --surface-elevated: #f5f8f9;
+  --terminal-green: #00b4a0;
+  --terminal-green-dim: #009688;
+  --terminal-green-glow: rgba(0, 180, 160, 0.15);
+  --terminal-green-subtle: rgba(0, 180, 160, 0.08);
 }
 
 @theme inline {
@@ -102,20 +102,20 @@
   }
 }
 
-/* Custom scrollbar for the dark theme */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0a0a0a;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1a1a1a;
+  background: #c8d0d4;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #2a2a2a;
+  background: #a0aab0;
 }
 
 /* Terminal glow animation */
@@ -131,7 +131,7 @@
 /* Subtle grid background */
 .bg-grid {
   background-image: 
-    linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(0, 180, 160, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 180, 160, 0.04) 1px, transparent 1px);
   background-size: 40px 40px;
 }

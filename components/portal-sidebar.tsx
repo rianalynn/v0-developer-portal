@@ -106,24 +106,24 @@ export function PortalSidebar() {
   }
 
   return (
-    <aside className="flex h-screen w-64 flex-col border-r border-border bg-sidebar">
+    <aside className="flex h-screen w-64 flex-col border-r border-sidebar-border bg-sidebar">
       {/* Logo */}
-      <div className="flex items-center gap-3 border-b border-border px-5 py-4">
+      <div className="flex items-center gap-3 border-b border-sidebar-border px-5 py-4">
         <Image
           src="/journey-foods-logo.svg"
           alt="Journey Foods Logo"
           width={120}
           height={24}
-          className="brightness-0 invert"
+          className="brightness-0 invert opacity-90"
         />
       </div>
 
       {/* Search */}
       <div className="px-3 py-3">
-        <div className="flex items-center gap-2 rounded-md border border-border bg-secondary px-3 py-2 text-sm text-muted-foreground">
+        <div className="flex items-center gap-2 rounded-md border border-sidebar-border bg-sidebar-accent px-3 py-2 text-sm text-sidebar-foreground/60">
           <Search className="size-3.5" />
           <span className="font-mono text-xs">Search docs...</span>
-          <kbd className="ml-auto rounded border border-border bg-background px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">/</kbd>
+          <kbd className="ml-auto rounded border border-sidebar-border bg-sidebar px-1.5 py-0.5 font-mono text-[10px] text-sidebar-foreground/40">/</kbd>
         </div>
       </div>
 
@@ -136,9 +136,9 @@ export function PortalSidebar() {
               <div key={section.title}>
                 <button
                   onClick={() => toggleSection(section.title)}
-                  className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm text-foreground transition-colors hover:bg-secondary"
+                  className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm text-sidebar-foreground transition-colors hover:bg-sidebar-accent"
                 >
-                  <span className="text-muted-foreground">{section.icon}</span>
+                  <span className="text-sidebar-foreground/50">{section.icon}</span>
                   <span className="flex-1 text-left font-medium">{section.title}</span>
                   {section.badge && (
                     <Badge
@@ -150,13 +150,13 @@ export function PortalSidebar() {
                   )}
                   <ChevronRight
                     className={cn(
-                      "size-3.5 text-muted-foreground transition-transform duration-200",
+                      "size-3.5 text-sidebar-foreground/40 transition-transform duration-200",
                       isExpanded && "rotate-90"
                     )}
                   />
                 </button>
                 {isExpanded && (
-                  <div className="ml-4 flex flex-col gap-0.5 border-l border-border py-1 pl-3">
+                  <div className="ml-4 flex flex-col gap-0.5 border-l border-sidebar-border py-1 pl-3">
                     {section.items.map((item) => (
                       <button
                         key={item.label}
@@ -164,8 +164,8 @@ export function PortalSidebar() {
                         className={cn(
                           "flex items-center gap-2 rounded-md px-2 py-1 text-left text-xs transition-colors",
                           activeItem === item.label
-                            ? "bg-terminal-green-subtle text-terminal-green"
-                            : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                            ? "bg-terminal-green/15 text-terminal-green"
+                            : "text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent"
                         )}
                       >
                         <span>{item.label}</span>
@@ -185,13 +185,13 @@ export function PortalSidebar() {
       </ScrollArea>
 
       {/* Bottom Links */}
-      <div className="border-t border-border px-3 py-3">
+      <div className="border-t border-sidebar-border px-3 py-3">
         <div className="flex flex-col gap-0.5">
           {bottomLinks.map((link) => (
             <a
               key={link.label}
               href={link.href}
-              className="flex items-center gap-2 rounded-md px-2 py-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"
+              className="flex items-center gap-2 rounded-md px-2 py-1.5 text-xs text-sidebar-foreground/50 transition-colors hover:text-sidebar-foreground hover:bg-sidebar-accent"
             >
               {link.icon}
               <span>{link.label}</span>
@@ -201,8 +201,8 @@ export function PortalSidebar() {
       </div>
 
       {/* Version */}
-      <div className="border-t border-border px-5 py-2.5">
-        <span className="font-mono text-[10px] text-muted-foreground">
+      <div className="border-t border-sidebar-border px-5 py-2.5">
+        <span className="font-mono text-[10px] text-sidebar-foreground/40">
           API v3.2.1 <span className="text-terminal-green">stable</span>
         </span>
       </div>
