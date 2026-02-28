@@ -89,7 +89,7 @@ const navSections: NavSection[] = [
 const bottomLinks = [
   { label: "API Reference", icon: <Book className="size-4" />, href: "#api-ref" },
   { label: "Changelog", icon: <FileCode className="size-4" />, href: "#changelog" },
-  { label: "Settings", icon: <Settings className="size-4" />, href: "#settings" },
+  { label: "Settings", icon: <Settings className="size-4" />, href: "/settings" },
   { label: "Support", icon: <HelpCircle className="size-4" />, href: "#support" },
 ]
 
