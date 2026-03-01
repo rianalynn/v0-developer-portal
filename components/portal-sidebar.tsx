@@ -59,7 +59,10 @@ const navSections: NavSection[] = [
     items: [
       { label: "Search Ingredients", href: "#search" },
       { label: "Nutrient Profiles", href: "#nutrients" },
+      { label: "Cost & Pricing Data", href: "#cost-data" },
+      { label: "Commodity Tracking", href: "#commodity", isNew: true },
       { label: "Allergen Data", href: "#allergens" },
+      { label: "Supply Chain Origins", href: "#supply-chain" },
       { label: "Batch Queries", href: "#batch", isNew: true },
     ],
   },
@@ -89,7 +92,7 @@ const navSections: NavSection[] = [
 const bottomLinks = [
   { label: "API Reference", icon: <Book className="size-4" />, href: "#api-ref" },
   { label: "Changelog", icon: <FileCode className="size-4" />, href: "#changelog" },
-  { label: "Settings", icon: <Settings className="size-4" />, href: "#settings" },
+  { label: "Settings", icon: <Settings className="size-4" />, href: "/settings" },
   { label: "Support", icon: <HelpCircle className="size-4" />, href: "#support" },
 ]
 
@@ -128,8 +131,8 @@ export function PortalSidebar() {
       </div>
 
       {/* Navigation Sections */}
-      <ScrollArea className="flex-1 px-3">
-        <nav className="flex flex-col gap-1 py-2">
+      <ScrollArea className="min-h-0 flex-1">
+        <nav className="flex flex-col gap-1 px-3 py-2">
           {navSections.map((section) => {
             const isExpanded = expandedSections.includes(section.title)
             return (
