@@ -21,21 +21,21 @@ const endpoints = [
     auth: true,
   },
   {
-    method: "POST",
-    path: "/v3/formulations/create",
-    description: "Create a new formulation",
-    auth: true,
-  },
-  {
     method: "GET",
     path: "/v3/ingredients/{id}/nutrients",
     description: "Retrieve nutrient profile for an ingredient",
     auth: true,
   },
   {
-    method: "POST",
-    path: "/v3/formulations/{id}/optimize",
-    description: "Optimize an existing formulation",
+    method: "GET",
+    path: "/v3/ingredients/{id}/allergens",
+    description: "Get allergen data for an ingredient",
+    auth: true,
+  },
+  {
+    method: "GET",
+    path: "/v3/ingredients/{id}/supply-chain",
+    description: "Get supply chain and origin data",
     auth: true,
   },
 ]

@@ -13,15 +13,9 @@ import {
   ChevronRight,
   Home,
   Book,
-  Key,
   FileCode,
-  Layers,
-  Beaker,
-  Boxes,
-  ShoppingCart,
   Settings,
   HelpCircle,
-  ExternalLink,
   Search,
 } from "lucide-react"
 
@@ -29,7 +23,8 @@ interface NavSection {
   title: string
   icon: React.ReactNode
   badge?: string
-  items: { label: string; href: string; isNew?: boolean }[]
+  comingSoon?: boolean
+  items: { label: string; href: string; isNew?: boolean; comingSoon?: boolean }[]
 }
 
 const navSections: NavSection[] = [
@@ -63,28 +58,30 @@ const navSections: NavSection[] = [
       { label: "Commodity Tracking", href: "#commodity", isNew: true },
       { label: "Allergen Data", href: "#allergens" },
       { label: "Supply Chain Origins", href: "#supply-chain" },
-      { label: "Batch Queries", href: "#batch", isNew: true },
     ],
   },
   {
     title: "Formulation API",
     icon: <FlaskConical className="size-4" />,
+    badge: "SOON",
+    comingSoon: true,
     items: [
-      { label: "Create Formulation", href: "#create-formulation" },
-      { label: "Optimize Recipe", href: "#optimize" },
-      { label: "Nutritional Analysis", href: "#analysis" },
-      { label: "Cost Modeling", href: "#cost", isNew: true },
+      { label: "Create Formulation", href: "#create-formulation", comingSoon: true },
+      { label: "Optimize Recipe", href: "#optimize", comingSoon: true },
+      { label: "Nutritional Analysis", href: "#analysis", comingSoon: true },
+      { label: "Cost Modeling", href: "#cost", comingSoon: true },
     ],
   },
   {
     title: "Marketplace",
     icon: <Store className="size-4" />,
-    badge: "NEW",
+    badge: "SOON",
+    comingSoon: true,
     items: [
-      { label: "Browse APIs", href: "#browse" },
-      { label: "Published Models", href: "#models" },
-      { label: "Pricing Tiers", href: "#pricing" },
-      { label: "Webhooks", href: "#webhooks" },
+      { label: "Browse APIs", href: "#browse", comingSoon: true },
+      { label: "Published Models", href: "#models", comingSoon: true },
+      { label: "Pricing Tiers", href: "#pricing", comingSoon: true },
+      { label: "Webhooks", href: "#webhooks", comingSoon: true },
     ],
   },
 ]
@@ -146,7 +143,12 @@ export function PortalSidebar() {
                   {section.badge && (
                     <Badge
                       variant="outline"
-                      className="border-terminal-green/30 bg-terminal-green-subtle text-terminal-green font-mono text-[10px] px-1.5 py-0"
+                      className={cn(
+                        "font-mono text-[10px] px-1.5 py-0",
+                        section.comingSoon
+                          ? "border-amber-500/30 bg-amber-500/10 text-amber-400"
+                          : "border-terminal-green/30 bg-terminal-green-subtle text-terminal-green"
+                      )}
                     >
                       {section.badge}
                     </Badge>
@@ -163,10 +165,13 @@ export function PortalSidebar() {
                     {section.items.map((item) => (
                       <button
                         key={item.label}
-                        onClick={() => setActiveItem(item.label)}
+                        onClick={() => !item.comingSoon && setActiveItem(item.label)}
+                        disabled={item.comingSoon}
                         className={cn(
                           "flex items-center gap-2 rounded-md px-2 py-1 text-left text-xs transition-colors",
-                          activeItem === item.label
+                          item.comingSoon
+                            ? "text-sidebar-foreground/30 cursor-not-allowed"
+                            : activeItem === item.label
                             ? "bg-terminal-green/15 text-terminal-green"
                             : "text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent"
                         )}
@@ -175,6 +180,11 @@ export function PortalSidebar() {
                         {item.isNew && (
                           <span className="rounded bg-terminal-green/20 px-1 py-0 font-mono text-[9px] text-terminal-green">
                             NEW
+                          </span>
+                        )}
+                        {item.comingSoon && (
+                          <span className="rounded bg-amber-500/20 px-1 py-0 font-mono text-[9px] text-amber-400">
+                            SOON
                           </span>
                         )}
                       </button>

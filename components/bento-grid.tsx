@@ -8,13 +8,10 @@ import {
   Store,
   Zap,
   Globe,
-  TrendingUp,
   Shield,
   Cpu,
   ArrowUpRight,
   Activity,
-  BarChart3,
-  Layers,
 } from "lucide-react"
 
 interface BentoCardProps {
@@ -27,17 +24,28 @@ interface BentoCardProps {
   className?: string
   children?: React.ReactNode
   accent?: boolean
+  comingSoon?: boolean
 }
 
-function BentoCard({ title, description, icon, stat, statLabel, badge, className, children, accent }: BentoCardProps) {
+function BentoCard({ title, description, icon, stat, statLabel, badge, className, children, accent, comingSoon }: BentoCardProps) {
   return (
     <div
       className={cn(
         "group relative flex flex-col overflow-hidden rounded-lg border border-border bg-card p-5 transition-all duration-300 hover:border-terminal-green/30 hover:shadow-sm",
         accent && "border-terminal-green/20 bg-terminal-green-subtle",
+        comingSoon && "opacity-70",
         className
       )}
     >
+      {/* Coming Soon Overlay */}
+      {comingSoon && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-card/60 backdrop-blur-[1px]">
+          <div className="rounded-md border border-amber-500/30 bg-amber-500/10 px-3 py-1.5">
+            <span className="font-mono text-xs font-bold text-amber-400">COMING SOON</span>
+          </div>
+        </div>
+      )}
+      
       {/* Top row */}
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-2">
@@ -52,7 +60,12 @@ function BentoCard({ title, description, icon, stat, statLabel, badge, className
         {badge && (
           <Badge
             variant="outline"
-            className="border-terminal-green/30 bg-terminal-green-subtle text-terminal-green font-mono text-[10px] px-1.5 py-0"
+            className={cn(
+              "font-mono text-[10px] px-1.5 py-0",
+              comingSoon
+                ? "border-amber-500/30 bg-amber-500/10 text-amber-400"
+                : "border-terminal-green/30 bg-terminal-green-subtle text-terminal-green"
+            )}
           >
             {badge}
           </Badge>
@@ -107,9 +120,9 @@ function MiniGraph() {
 function DataTicker() {
   const items = [
     { label: "Ingredients", value: "2,147,483,647", change: "+12.3%" },
-    { label: "Formulations", value: "847,293", change: "+8.7%" },
+    { label: "Nutrient Profiles", value: "847,293", change: "+8.7%" },
     { label: "API Calls / day", value: "14.2M", change: "+23.1%" },
-    { label: "Models Active", value: "1,247", change: "+5.4%" },
+    { label: "Suppliers", value: "12,847", change: "+5.4%" },
   ]
 
   return (
@@ -127,33 +140,7 @@ function DataTicker() {
   )
 }
 
-function MarketplaceItems() {
-  const apis = [
-    { name: "Allergen Detection v2", author: "Journey Labs", calls: "2.1M", rating: 4.9 },
-    { name: "Nutrient Optimizer", author: "FoodTech AI", calls: "1.8M", rating: 4.8 },
-    { name: "Cost Predictor", author: "Supply Chain Co", calls: "890K", rating: 4.7 },
-  ]
 
-  return (
-    <div className="flex flex-col gap-2">
-      {apis.map((api) => (
-        <div key={api.name} className="flex items-center gap-3 rounded-md border border-border bg-secondary/50 px-3 py-2">
-          <div className="flex size-7 items-center justify-center rounded bg-terminal-green/10">
-            <Cpu className="size-3.5 text-terminal-green" />
-          </div>
-          <div className="flex-1">
-            <div className="text-xs font-medium text-foreground">{api.name}</div>
-            <div className="text-[10px] text-muted-foreground">{api.author}</div>
-          </div>
-          <div className="text-right">
-            <div className="font-mono text-xs text-foreground">{api.calls}</div>
-            <div className="text-[10px] text-muted-foreground">calls</div>
-          </div>
-        </div>
-      ))}
-    </div>
-  )
-}
 
 export function BentoGrid() {
   return (
@@ -206,9 +193,8 @@ export function BentoGrid() {
           title="Formulation Engine"
           description="AI-powered recipe optimization with cost modeling, nutritional targeting, and regulatory compliance."
           icon={<FlaskConical className="size-4" />}
-          stat="847K"
-          statLabel="formulations"
-          badge="v3"
+          badge="SOON"
+          comingSoon
         />
 
         {/* Marketplace */}
@@ -216,11 +202,10 @@ export function BentoGrid() {
           title="API Marketplace"
           description="Pre-built AI models and data APIs from the Journey ecosystem. Deploy in minutes."
           icon={<Store className="size-4" />}
-          badge="NEW"
+          badge="SOON"
+          comingSoon
           className="lg:row-span-2"
-        >
-          <MarketplaceItems />
-        </BentoCard>
+        />
 
         {/* Latency */}
         <BentoCard
