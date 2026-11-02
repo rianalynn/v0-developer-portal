@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Badge } from "@/components/ui/badge"
+import { SUPPORT_URL } from "@/lib/portal-links"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -72,18 +72,13 @@ export function PortalHeader({ breadcrumbs }: PortalHeaderProps) {
       {/* Right: Actions */}
       <div className="flex items-center gap-3">
         {/* API Key */}
-        <div className="flex items-center gap-2 rounded-md border border-border bg-secondary px-3 py-1.5">
+        <Link
+          href="/settings#api-keys"
+          className="flex items-center gap-2 rounded-md border border-border bg-secondary px-3 py-1.5 transition-colors hover:bg-muted"
+        >
           <Key className="size-3 text-muted-foreground" />
-          <code className="font-mono text-[10px] text-muted-foreground">
-            sk-jrny_...x8f2
-          </code>
-          <Badge
-            variant="outline"
-            className="border-terminal-green/30 bg-terminal-green-subtle text-terminal-green font-mono text-[9px] px-1 py-0"
-          >
-            LIVE
-          </Badge>
-        </div>
+          <span className="font-mono text-[10px] text-muted-foreground">Get API key</span>
+        </Link>
 
         {/* Console */}
         <button className="flex items-center gap-1.5 rounded-md border border-terminal-green/30 bg-terminal-green/10 px-3 py-1.5 text-xs text-terminal-green transition-colors hover:bg-terminal-green/20">
@@ -135,7 +130,7 @@ export function PortalHeader({ breadcrumbs }: PortalHeaderProps) {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href="/settings" className="cursor-pointer">
+                <Link href="/billing" className="cursor-pointer">
                   <CreditCard className="mr-2 size-4" />
                   Billing
                 </Link>
@@ -143,10 +138,10 @@ export function PortalHeader({ breadcrumbs }: PortalHeaderProps) {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link href="/" className="cursor-pointer">
+              <a href={SUPPORT_URL} target="_blank" rel="noopener noreferrer" className="cursor-pointer">
                 <HelpCircle className="mr-2 size-4" />
                 Support
-              </Link>
+              </a>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="cursor-pointer text-destructive focus:text-destructive">

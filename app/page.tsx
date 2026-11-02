@@ -3,6 +3,7 @@ import { PortalHeader } from "@/components/portal-header"
 import { ApiReference } from "@/components/api-reference"
 import { BentoGrid } from "@/components/bento-grid"
 import { SystemStatus } from "@/components/system-status"
+import { QuickStart } from "@/components/quick-start"
 import { Separator } from "@/components/ui/separator"
 
 export default function DeveloperPortal() {
@@ -21,6 +22,9 @@ export default function DeveloperPortal() {
           <div className="flex flex-col gap-8 p-6">
             {/* Hero Banner */}
             <HeroBanner />
+
+            {/* Quick Start: a live call and how to get a key */}
+            <QuickStart />
 
             {/* API Reference */}
             <ApiReference />
@@ -42,7 +46,7 @@ export default function DeveloperPortal() {
 
 function HeroBanner() {
   return (
-    <div className="relative overflow-hidden rounded-lg border border-border bg-card p-6">
+    <div id="overview" className="relative scroll-mt-6 overflow-hidden rounded-lg border border-border bg-card p-6">
       {/* Glow effect */}
       <div className="pointer-events-none absolute -right-20 -top-20 size-60 rounded-full bg-terminal-green/8 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-10 -left-10 size-40 rounded-full bg-terminal-green/5 blur-2xl" />
@@ -61,12 +65,18 @@ function HeroBanner() {
             of specialized food science APIs. Start building in minutes.
           </p>
           <div className="mt-2 flex items-center gap-3">
-            <button className="rounded-md bg-terminal-green px-4 py-2 font-mono text-xs font-bold text-primary-foreground transition-colors hover:bg-terminal-green-dim">
+            <a
+              href="/settings#api-keys"
+              className="rounded-md bg-terminal-green px-4 py-2 font-mono text-xs font-bold text-primary-foreground transition-colors hover:bg-terminal-green-dim"
+            >
               Get API Key
-            </button>
-            <button className="rounded-md border border-border bg-secondary px-4 py-2 font-mono text-xs text-foreground transition-colors hover:bg-muted">
+            </a>
+            <a
+              href="#api-ref"
+              className="rounded-md border border-border bg-secondary px-4 py-2 font-mono text-xs text-foreground transition-colors hover:bg-muted"
+            >
               View Docs
-            </button>
+            </a>
           </div>
         </div>
 

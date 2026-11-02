@@ -1,180 +1,89 @@
-"use client"
+import { ArrowUpRight, Key, ShieldCheck, Terminal } from "lucide-react"
+import { ACCOUNT_ENDPOINT, CONNECT_URL, SUBSCRIBE_URL, TRIAL_KEY_URL } from "@/lib/portal-links"
 
-import { useState } from "react"
-import { Badge } from "@/components/ui/badge"
-import { Progress } from "@/components/ui/progress"
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-  DialogClose,
-} from "@/components/ui/dialog"
-import {
-  Key,
-  Copy,
-  Check,
-  RefreshCw,
-  Eye,
-  EyeOff,
-  Shield,
-  Clock,
-  AlertTriangle,
-} from "lucide-react"
-
+/**
+ * How to get a real API key. The portal used to show a made-up
+ * "sk-jrny_…" key that no API accepts. Keys are now issued by the Journey
+ * price feed, shown once there, and never displayed or stored in this portal.
+ */
 export function ApiKeyManagement() {
-  const [copied, setCopied] = useState(false)
-  const [revealed, setRevealed] = useState(false)
-  const [showRegenDialog, setShowRegenDialog] = useState(false)
-  const [isRegenerating, setIsRegenerating] = useState(false)
-
-  const maskedKey = "sk-jrny_••••••••••••••••••••x8f2"
-  const fullKey = "sk-jrny_a3k8m2p9x7r4w1t6n5v0q8e3x8f2"
-  const requestsUsed = 450
-  const requestsLimit = 1000
-  const usagePercent = (requestsUsed / requestsLimit) * 100
-
-  function handleCopy() {
-    navigator.clipboard.writeText(fullKey)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
-
-  function handleRegenerate() {
-    setIsRegenerating(true)
-    setTimeout(() => {
-      setIsRegenerating(false)
-      setShowRegenDialog(false)
-    }, 1500)
-  }
+  const steps = [
+    {
+      title: "Get a key",
+      body: "Start a free 14-day trial (100 calls, one key per email) or subscribe for a live key. Your key is shown once, so copy it into your password manager or secret store.",
+      actions: [
+        { label: "Start a 14-day trial key", href: TRIAL_KEY_URL, primary: true },
+        { label: "Subscribe for a live key", href: SUBSCRIBE_URL },
+      ],
+    },
+    {
+      title: "Keep it secret",
+      body: "Trial keys start with jf_test_ and live keys with jf_live_. Put the key in an environment variable such as JOURNEY_API_KEY. Don't commit it or paste it into a browser app.",
+    },
+    {
+      title: "Check that it works",
+      body: "Call the account endpoint with your key. A 200 shows your plan and remaining calls; a 401 means the key is wrong or expired.",
+      code: `curl -H "Authorization: Bearer $JOURNEY_API_KEY" ${ACCOUNT_ENDPOINT}`,
+      actions: [{ label: "REST, MCP and terminal setup", href: CONNECT_URL }],
+    },
+  ]
 
   return (
-    <section className="flex flex-col gap-4">
+    <section id="api-keys" className="flex scroll-mt-6 flex-col gap-4">
       <div className="flex items-center gap-2">
         <Key className="size-4 text-terminal-green" />
-        <h2 className="text-sm font-semibold text-foreground">API Key Management</h2>
+        <h2 className="text-sm font-semibold text-foreground">API Keys</h2>
       </div>
 
       <div className="rounded-lg border border-border bg-card">
-        {/* Key Display Row */}
-        <div className="flex flex-col gap-4 p-5 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-medium text-muted-foreground">Production API Key</span>
-              <Badge
-                variant="outline"
-                className="border-terminal-green/30 bg-terminal-green-subtle text-terminal-green font-mono text-[9px] px-1.5 py-0"
-              >
-                LIVE
-              </Badge>
-            </div>
+        <div className="flex items-start gap-3 border-b border-border p-5">
+          <ShieldCheck className="mt-0.5 size-4 shrink-0 text-terminal-green" />
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            Your key comes from the Journey price feed at price.journeyfoods.io and works with its REST API, MCP
+            server and terminal. For your security this portal never shows or stores a key.
+          </p>
+        </div>
 
-            {/* Key Field */}
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-2 rounded-md border border-border bg-secondary px-3 py-2">
-                <Shield className="size-3.5 text-muted-foreground" />
-                <code className="font-mono text-sm text-foreground">
-                  {revealed ? fullKey : maskedKey}
-                </code>
-              </div>
-
-              <button
-                onClick={() => setRevealed(!revealed)}
-                className="flex size-8 items-center justify-center rounded-md border border-border bg-secondary text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                aria-label={revealed ? "Hide API key" : "Reveal API key"}
-              >
-                {revealed ? <EyeOff className="size-3.5" /> : <Eye className="size-3.5" />}
-              </button>
-
-              <button
-                onClick={handleCopy}
-                className="flex items-center gap-1.5 rounded-md border border-border bg-secondary px-3 py-2 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-              >
-                {copied ? (
-                  <Check className="size-3.5 text-terminal-green" />
-                ) : (
-                  <Copy className="size-3.5" />
+        <ol className="flex flex-col divide-y divide-border">
+          {steps.map((step, i) => (
+            <li key={step.title} className="flex gap-4 p-5">
+              <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-terminal-green/15 font-mono text-xs font-bold text-terminal-green">
+                {i + 1}
+              </span>
+              <div className="flex min-w-0 flex-1 flex-col gap-2">
+                <h3 className="text-sm font-medium text-foreground">{step.title}</h3>
+                <p className="text-xs leading-relaxed text-muted-foreground">{step.body}</p>
+                {step.code && (
+                  <div className="flex items-start gap-2 overflow-x-auto rounded-md border border-border bg-secondary px-3 py-2">
+                    <Terminal className="mt-0.5 size-3.5 shrink-0 text-muted-foreground" />
+                    <code className="whitespace-pre font-mono text-[11px] text-foreground">{step.code}</code>
+                  </div>
                 )}
-                <span>{copied ? "Copied" : "Copy"}</span>
-              </button>
-
-              <button
-                onClick={() => setShowRegenDialog(true)}
-                className="flex items-center gap-1.5 rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-xs text-destructive transition-colors hover:bg-destructive/10"
-              >
-                <RefreshCw className="size-3.5" />
-                <span>Regenerate</span>
-              </button>
-            </div>
-
-            <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
-              <div className="flex items-center gap-1">
-                <Clock className="size-3" />
-                <span>Created Jan 15, 2026</span>
+                {step.actions && (
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    {step.actions.map((action) => (
+                      <a
+                        key={action.label}
+                        href={action.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={
+                          "primary" in action && action.primary
+                            ? "inline-flex items-center gap-1 rounded-md bg-terminal-green px-3 py-1.5 font-mono text-xs font-bold text-primary-foreground transition-colors hover:bg-terminal-green-dim"
+                            : "inline-flex items-center gap-1 rounded-md border border-border bg-secondary px-3 py-1.5 font-mono text-xs text-foreground transition-colors hover:bg-muted"
+                        }
+                      >
+                        {action.label}
+                        <ArrowUpRight className="size-3" />
+                      </a>
+                    ))}
+                  </div>
+                )}
               </div>
-              <span className="text-border">|</span>
-              <span>Last used 2 minutes ago</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Usage Bar */}
-        <div className="border-t border-border px-5 py-4">
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-foreground">Requests used this month</span>
-              <span className="font-mono text-xs text-muted-foreground">
-                <span className="text-foreground font-semibold">{requestsUsed.toLocaleString()}</span>
-                {" / "}
-                {requestsLimit.toLocaleString()}
-              </span>
-            </div>
-            <Progress value={usagePercent} className="h-2 bg-secondary" />
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] text-muted-foreground">
-                {usagePercent < 80
-                  ? "Usage is healthy"
-                  : "Approaching limit"}
-              </span>
-              <span className="text-[11px] text-muted-foreground">
-                Resets Mar 1, 2026
-              </span>
-            </div>
-          </div>
-        </div>
+            </li>
+          ))}
+        </ol>
       </div>
-
-      {/* Regenerate Confirmation Dialog */}
-      <Dialog open={showRegenDialog} onOpenChange={setShowRegenDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <AlertTriangle className="size-4 text-destructive" />
-              Regenerate API Key
-            </DialogTitle>
-            <DialogDescription>
-              This will permanently invalidate your current API key. All applications using the existing key will stop working immediately. This action cannot be undone.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <DialogClose asChild>
-              <button className="rounded-md border border-border bg-secondary px-4 py-2 text-sm text-foreground transition-colors hover:bg-muted">
-                Cancel
-              </button>
-            </DialogClose>
-            <button
-              onClick={handleRegenerate}
-              disabled={isRegenerating}
-              className="flex items-center gap-2 rounded-md bg-destructive px-4 py-2 text-sm text-destructive-foreground transition-colors hover:bg-destructive/90 disabled:opacity-50"
-            >
-              {isRegenerating && <RefreshCw className="size-3.5 animate-spin" />}
-              {isRegenerating ? "Regenerating..." : "Regenerate Key"}
-            </button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </section>
   )
 }

@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { endpointSlug } from "@/lib/portal-links"
 import { cn } from "@/lib/utils"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
@@ -131,6 +132,23 @@ export function ApiReference() {
   const [activeEndpoint, setActiveEndpoint] = useState(0)
   const [codeTab, setCodeTab] = useState("curl")
 
+  // Sidebar and Platform Overview links open a specific endpoint
+  // (#endpoint-ingredients-search) or the Python tab (#code-python).
+  useEffect(() => {
+    function applyHash() {
+      const hash = window.location.hash.slice(1)
+      if (hash.startsWith("endpoint-")) {
+        const idx = endpoints.findIndex((ep) => `endpoint-${endpointSlug(ep.path)}` === hash)
+        if (idx >= 0) setActiveEndpoint(idx)
+      } else if (hash === "code-python") {
+        setCodeTab("python")
+      }
+    }
+    applyHash()
+    window.addEventListener("hashchange", applyHash)
+    return () => window.removeEventListener("hashchange", applyHash)
+  }, [])
+
   function handleCopy() {
     const text = codeTab === "curl" ? curlSnippet : codeTab === "response" ? jsonResponse : pythonSnippet
     navigator.clipboard.writeText(text)
@@ -139,7 +157,7 @@ export function ApiReference() {
   }
 
   return (
-    <section className="flex flex-col gap-6">
+    <section id="api-ref" className="flex scroll-mt-6 flex-col gap-6">
       {/* Section Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -164,9 +182,10 @@ export function ApiReference() {
         {endpoints.map((ep, idx) => (
           <button
             key={idx}
+            id={`endpoint-${endpointSlug(ep.path)}`}
             onClick={() => setActiveEndpoint(idx)}
             className={cn(
-              "flex items-center gap-3 rounded-md px-3 py-2 text-left transition-colors",
+              "flex scroll-mt-6 items-center gap-3 rounded-md px-3 py-2 text-left transition-colors",
               activeEndpoint === idx
                 ? "bg-terminal-green-subtle border border-terminal-green/20"
                 : "border border-transparent hover:bg-secondary"
@@ -255,7 +274,7 @@ export function ApiReference() {
         </div>
 
         {/* Right Pane: Code Snippet */}
-        <div className="flex flex-col bg-[#0c1f1b]">
+        <div id="code-python" className="flex scroll-mt-6 flex-col bg-[#0c1f1b]">
           {/* Code Tabs Header */}
           <div className="flex items-center justify-between border-b border-[#1a3d35] px-4 py-2">
             <div className="flex items-center gap-1">
@@ -286,10 +305,13 @@ export function ApiReference() {
                 {copied ? <Check className="size-3 text-terminal-green" /> : <Copy className="size-3" />}
                 <span>{copied ? "Copied" : "Copy"}</span>
               </button>
-              <button className="flex items-center gap-1 rounded-md bg-terminal-green/15 px-2.5 py-1 text-xs text-terminal-green transition-colors hover:bg-terminal-green/25">
+              <a
+                href="#quickstart"
+                className="flex items-center gap-1 rounded-md bg-terminal-green/15 px-2.5 py-1 text-xs text-terminal-green transition-colors hover:bg-terminal-green/25"
+              >
                 <Play className="size-3" />
-                <span>Run</span>
-              </button>
+                <span>Run a live call</span>
+              </a>
             </div>
           </div>
 
