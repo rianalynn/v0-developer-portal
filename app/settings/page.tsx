@@ -2,7 +2,6 @@ import { PortalSidebar } from "@/components/portal-sidebar"
 import { PortalHeader } from "@/components/portal-header"
 import { SystemStatus } from "@/components/system-status"
 import { ApiKeyManagement } from "@/components/settings/api-key-management"
-import { PlansBilling } from "@/components/settings/plans-billing"
 import { UsageLogs } from "@/components/settings/usage-logs"
 
 export default function SettingsPage() {
@@ -14,7 +13,7 @@ export default function SettingsPage() {
         <PortalHeader
           breadcrumbs={[
             { label: "Developer Portal", href: "/" },
-            { label: "Settings & Billing" },
+            { label: "Settings" },
           ]}
         />
 
@@ -23,18 +22,19 @@ export default function SettingsPage() {
             {/* Page Title */}
             <div className="flex flex-col gap-1">
               <h1 className="text-xl font-bold tracking-tight text-foreground">
-                Settings & Billing
+                Settings
               </h1>
               <p className="text-sm text-muted-foreground">
-                Manage your API keys, subscription plan, and review usage logs.
+                Get and check your API key, and review recent API calls. Plans and invoices are on{" "}
+                <a href="/billing" className="text-terminal-green underline-offset-4 hover:underline">
+                  Billing
+                </a>
+                .
               </p>
             </div>
 
             {/* API Key Management */}
             <ApiKeyManagement />
-
-            {/* Plans / Billing */}
-            <PlansBilling />
 
             {/* Usage Logs */}
             <UsageLogs />

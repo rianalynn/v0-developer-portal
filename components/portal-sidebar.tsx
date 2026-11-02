@@ -1,8 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
+import { CONNECT_URL, PRICE_SITE, SUPPORT_URL } from "@/lib/portal-links"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -20,36 +21,43 @@ import {
   Boxes,
   ShoppingCart,
   Settings,
+  CreditCard,
   HelpCircle,
   ExternalLink,
   Search,
 } from "lucide-react"
 
+interface NavItem {
+  label: string
+  href: string
+  isNew?: boolean
+}
+
 interface NavSection {
   title: string
   icon: React.ReactNode
   badge?: string
-  items: { label: string; href: string; isNew?: boolean }[]
+  items: NavItem[]
 }
 
+// Every item opens a real section: a page section, a selected endpoint in the
+// API Reference, Settings or Billing, or the live price feed for pricing data.
 const navSections: NavSection[] = [
   {
     title: "Getting Started",
     icon: <Home className="size-4" />,
     items: [
-      { label: "Overview", href: "#overview" },
-      { label: "Quick Start", href: "#quickstart" },
-      { label: "SDKs & Libraries", href: "#sdks" },
+      { label: "Overview", href: "/#overview" },
+      { label: "Quick Start", href: "/#quickstart" },
+      { label: "SDKs & Libraries", href: "/#code-python" },
     ],
   },
   {
     title: "Authentication",
     icon: <Shield className="size-4" />,
     items: [
-      { label: "API Keys", href: "#api-keys" },
-      { label: "OAuth 2.0", href: "#oauth" },
-      { label: "Rate Limits", href: "#rate-limits" },
-      { label: "Scopes & Permissions", href: "#scopes" },
+      { label: "API Keys", href: "/settings#api-keys" },
+      { label: "Rate Limits", href: "/billing#plans" },
     ],
   },
   {
@@ -57,23 +65,22 @@ const navSections: NavSection[] = [
     icon: <Database className="size-4" />,
     badge: "2B+",
     items: [
-      { label: "Search Ingredients", href: "#search" },
-      { label: "Nutrient Profiles", href: "#nutrients" },
-      { label: "Cost & Pricing Data", href: "#cost-data" },
-      { label: "Commodity Tracking", href: "#commodity", isNew: true },
-      { label: "Allergen Data", href: "#allergens" },
-      { label: "Supply Chain Origins", href: "#supply-chain" },
-      { label: "Batch Queries", href: "#batch", isNew: true },
+      { label: "Search Ingredients", href: "/#endpoint-ingredients-search" },
+      { label: "Nutrient Profiles", href: "/#endpoint-ingredients-nutrients" },
+      { label: "Cost & Pricing Data", href: PRICE_SITE },
+      { label: "Commodity Tracking", href: CONNECT_URL, isNew: true },
+      { label: "Allergen Data", href: "/#endpoint-ingredients-search" },
+      { label: "Supply Chain Origins", href: "/#endpoint-ingredients-search" },
     ],
   },
   {
     title: "Formulation API",
     icon: <FlaskConical className="size-4" />,
     items: [
-      { label: "Create Formulation", href: "#create-formulation" },
-      { label: "Optimize Recipe", href: "#optimize" },
-      { label: "Nutritional Analysis", href: "#analysis" },
-      { label: "Cost Modeling", href: "#cost", isNew: true },
+      { label: "Create Formulation", href: "/#endpoint-formulations-create" },
+      { label: "Optimize Recipe", href: "/#endpoint-formulations-optimize" },
+      { label: "Nutritional Analysis", href: "/#endpoint-ingredients-nutrients" },
+      { label: "Cost Modeling", href: "/#endpoint-formulations-optimize", isNew: true },
     ],
   },
   {
@@ -81,24 +88,38 @@ const navSections: NavSection[] = [
     icon: <Store className="size-4" />,
     badge: "NEW",
     items: [
-      { label: "Browse APIs", href: "#browse" },
-      { label: "Published Models", href: "#models" },
-      { label: "Pricing Tiers", href: "#pricing" },
-      { label: "Webhooks", href: "#webhooks" },
+      { label: "Browse APIs", href: "/#platform-overview" },
+      { label: "Published Models", href: "/#platform-ml-models" },
+      { label: "Pricing Tiers", href: "/billing#plans" },
     ],
   },
 ]
 
 const bottomLinks = [
-  { label: "API Reference", icon: <Book className="size-4" />, href: "#api-ref" },
-  { label: "Changelog", icon: <FileCode className="size-4" />, href: "#changelog" },
+  { label: "API Reference", icon: <Book className="size-4" />, href: "/#api-ref" },
   { label: "Settings", icon: <Settings className="size-4" />, href: "/settings" },
-  { label: "Support", icon: <HelpCircle className="size-4" />, href: "#support" },
+  { label: "Billing", icon: <CreditCard className="size-4" />, href: "/billing" },
+  { label: "Support", icon: <HelpCircle className="size-4" />, href: SUPPORT_URL },
 ]
+
+const isExternal = (href: string) => href.startsWith("http")
+
+/** The current path plus hash, kept in sync as in-page links are followed. */
+function useLocationKey() {
+  const [location, setLocation] = useState("")
+  useEffect(() => {
+    const update = () => setLocation(window.location.pathname + window.location.hash)
+    update()
+    window.addEventListener("hashchange", update)
+    return () => window.removeEventListener("hashchange", update)
+  }, [])
+  return location
+}
 
 export function PortalSidebar() {
   const [expandedSections, setExpandedSections] = useState<string[]>(["Authentication", "Ingredient Database"])
-  const [activeItem, setActiveItem] = useState("API Keys")
+  const location = useLocationKey()
+  const [clicked, setClicked] = useState<string | null>(null)
 
   function toggleSection(title: string) {
     setExpandedSections((prev) =>
@@ -160,25 +181,34 @@ export function PortalSidebar() {
                 </button>
                 {isExpanded && (
                   <div className="ml-4 flex flex-col gap-0.5 border-l border-sidebar-border py-1 pl-3">
-                    {section.items.map((item) => (
-                      <button
-                        key={item.label}
-                        onClick={() => setActiveItem(item.label)}
-                        className={cn(
-                          "flex items-center gap-2 rounded-md px-2 py-1 text-left text-xs transition-colors",
-                          activeItem === item.label
-                            ? "bg-terminal-green/15 text-terminal-green"
-                            : "text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent"
-                        )}
-                      >
-                        <span>{item.label}</span>
-                        {item.isNew && (
-                          <span className="rounded bg-terminal-green/20 px-1 py-0 font-mono text-[9px] text-terminal-green">
-                            NEW
-                          </span>
-                        )}
-                      </button>
-                    ))}
+                    {section.items.map((item) => {
+                      const active =
+                        clicked === item.label || (!clicked && location !== "" && location === item.href)
+                      const external = isExternal(item.href)
+                      return (
+                        <a
+                          key={item.label}
+                          href={item.href}
+                          {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                          onClick={() => !external && setClicked(item.label)}
+                          aria-current={active ? "page" : undefined}
+                          className={cn(
+                            "flex items-center gap-2 rounded-md px-2 py-1 text-left text-xs transition-colors",
+                            active
+                              ? "bg-terminal-green/15 text-terminal-green"
+                              : "text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent"
+                          )}
+                        >
+                          <span>{item.label}</span>
+                          {item.isNew && (
+                            <span className="rounded bg-terminal-green/20 px-1 py-0 font-mono text-[9px] text-terminal-green">
+                              NEW
+                            </span>
+                          )}
+                          {external && <ExternalLink className="ml-auto size-3 opacity-50" aria-label="opens in a new tab" />}
+                        </a>
+                      )
+                    })}
                   </div>
                 )}
               </div>
@@ -194,6 +224,7 @@ export function PortalSidebar() {
             <a
               key={link.label}
               href={link.href}
+              {...(isExternal(link.href) ? { target: "_blank", rel: "noopener noreferrer" } : {})}
               className="flex items-center gap-2 rounded-md px-2 py-1.5 text-xs text-sidebar-foreground/50 transition-colors hover:text-sidebar-foreground hover:bg-sidebar-accent"
             >
               {link.icon}

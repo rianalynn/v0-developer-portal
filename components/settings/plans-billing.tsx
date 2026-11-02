@@ -88,7 +88,7 @@ const plans: Plan[] = [
 
 export function PlansBilling() {
   return (
-    <section className="flex flex-col gap-4">
+    <section id="plans" className="flex scroll-mt-6 flex-col gap-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <CreditCard className="size-4 text-terminal-green" />

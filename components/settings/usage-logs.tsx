@@ -172,7 +172,7 @@ function MethodBadge({ method }: { method: string }) {
 
 export function UsageLogs() {
   return (
-    <section className="flex flex-col gap-4">
+    <section id="usage-logs" className="flex scroll-mt-6 flex-col gap-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <ScrollText className="size-4 text-terminal-green" />

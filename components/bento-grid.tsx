@@ -1,6 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
+import { PRICE_SITE } from "@/lib/portal-links"
 import { Badge } from "@/components/ui/badge"
 import {
   Database,
@@ -27,13 +28,21 @@ interface BentoCardProps {
   className?: string
   children?: React.ReactNode
   accent?: boolean
+  /** Where the card opens: a page section, Settings/Billing, or an external site. */
+  href: string
+  id?: string
 }
 
-function BentoCard({ title, description, icon, stat, statLabel, badge, className, children, accent }: BentoCardProps) {
+function BentoCard({ title, description, icon, stat, statLabel, badge, className, children, accent, href, id }: BentoCardProps) {
+  const external = href.startsWith("http")
   return (
-    <div
+    <a
+      id={id}
+      href={href}
+      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      aria-label={`${title}: ${description}`}
       className={cn(
-        "group relative flex flex-col overflow-hidden rounded-lg border border-border bg-card p-5 transition-all duration-300 hover:border-terminal-green/30 hover:shadow-sm",
+        "group relative flex scroll-mt-6 flex-col overflow-hidden rounded-lg border border-border bg-card p-5 transition-all duration-300 hover:border-terminal-green/30 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terminal-green/50",
         accent && "border-terminal-green/20 bg-terminal-green-subtle",
         className
       )}
@@ -57,7 +66,7 @@ function BentoCard({ title, description, icon, stat, statLabel, badge, className
             {badge}
           </Badge>
         )}
-        <ArrowUpRight className="size-4 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+        <ArrowUpRight className="size-4 text-muted-foreground opacity-40 transition-opacity group-hover:opacity-100" aria-hidden="true" />
       </div>
 
       {/* Stat */}
@@ -78,7 +87,7 @@ function BentoCard({ title, description, icon, stat, statLabel, badge, className
 
       {/* Optional Children */}
       {children && <div className="mt-4 flex-1">{children}</div>}
-    </div>
+    </a>
   )
 }
 
@@ -157,7 +166,7 @@ function MarketplaceItems() {
 
 export function BentoGrid() {
   return (
-    <section className="flex flex-col gap-4">
+    <section id="platform-overview" className="flex scroll-mt-6 flex-col gap-4">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold text-foreground">Platform Overview</h2>
         <span className="font-mono text-xs text-muted-foreground">
@@ -170,6 +179,7 @@ export function BentoGrid() {
         {/* Large: Data Points */}
         <BentoCard
           title="Ingredient Database"
+          href="/#endpoint-ingredients-search"
           description="The world's largest structured food ingredient dataset. Real-time nutrient profiles, allergen mapping, and supply chain data across 190 countries."
           icon={<Database className="size-4" />}
           stat="2B+"
@@ -184,6 +194,7 @@ export function BentoGrid() {
         {/* API Calls */}
         <BentoCard
           title="API Throughput"
+          href="/settings#usage-logs"
           description="Average daily API requests across all endpoints with 99.99% uptime SLA."
           icon={<Zap className="size-4" />}
           stat="14.2M"
@@ -195,6 +206,7 @@ export function BentoGrid() {
         {/* Global Coverage */}
         <BentoCard
           title="Global Coverage"
+          href="/#endpoint-ingredients-search"
           description="Ingredient data sourced from suppliers and regulatory bodies across 190 countries."
           icon={<Globe className="size-4" />}
           stat="190"
@@ -204,6 +216,7 @@ export function BentoGrid() {
         {/* Formulation Engine */}
         <BentoCard
           title="Formulation Engine"
+          href="/#endpoint-formulations-create"
           description="AI-powered recipe optimization with cost modeling, nutritional targeting, and regulatory compliance."
           icon={<FlaskConical className="size-4" />}
           stat="847K"
@@ -214,6 +227,7 @@ export function BentoGrid() {
         {/* Marketplace */}
         <BentoCard
           title="API Marketplace"
+          href={PRICE_SITE}
           description="Pre-built AI models and data APIs from the Journey ecosystem. Deploy in minutes."
           icon={<Store className="size-4" />}
           badge="NEW"
@@ -225,6 +239,7 @@ export function BentoGrid() {
         {/* Latency */}
         <BentoCard
           title="Edge Performance"
+          href="/settings#usage-logs"
           description="P95 latency across all global edge nodes. Sub-50ms response times for cached queries."
           icon={<Activity className="size-4" />}
           stat="23ms"
@@ -234,6 +249,7 @@ export function BentoGrid() {
         {/* Security */}
         <BentoCard
           title="Enterprise Security"
+          href="/settings#api-keys"
           description="SOC 2 Type II certified. End-to-end encryption, SSO, and granular RBAC for enterprise teams."
           icon={<Shield className="size-4" />}
           badge="SOC2"
@@ -242,6 +258,7 @@ export function BentoGrid() {
         {/* ML Models */}
         <BentoCard
           title="ML Models"
+          href="/#endpoint-formulations-optimize" id="platform-ml-models"
           description="Production-grade machine learning models for ingredient classification, cost prediction, and nutritional analysis."
           icon={<Cpu className="size-4" />}
           stat="1,247"
